@@ -4,13 +4,11 @@ import AudioFile from './assets/audio.mp3';
 import './App.css';
 
 function App() {
-
-
   return (
     <>
-      <AudioPlayer audioFile={AudioFile} />   
+      <AudioPlayer audioFile={AudioFile} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
