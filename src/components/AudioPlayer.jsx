@@ -17,7 +17,7 @@ const formWaveSurferOptions = (ref) => ({
   cursorColor: 'transparent',
   responsive: true,
   height: 200,
-  normalize: false, // height to height of container
+  normalize: true, // height to height of container
   backend: 'WebAudio',
   barWidth: 2,
   barGroup: 3,
@@ -42,10 +42,16 @@ export default function AudioPlayer({ audioFile }) {
 
 // Initialize Wavesurfer and set up event listeners
 useEffect(() => {
+  console.log("Initializing Wavesurfer");
+
   if (!wavesurfer.current) {
+    console.log("Creating new Wavesurfer instance");
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
+  } else {
+    console.log("Wavesurfer instance already exists");
   }
+
 
   // Load the audio file
   wavesurfer.current.load(audioFile);
@@ -78,6 +84,7 @@ const handlePlayPause = () => {
 };
 
 // Adjust audio volume
+// Adjust audio volume
 const handleVolumeChange = (newVolume) => {
   if (muted && newVolume > 0) {
     setMuted(false);
@@ -100,7 +107,7 @@ const handleVolumeUp = () => {
 
 // Decrease volume by 10%
 const handleVolumeDown = () => {
-  handleVolumeChange(Math.max(volume - 0.1, 1));
+  handleVolumeChange(Math.max(volume - 0.1, 0));
 };
 
   return (

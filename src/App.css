@@ -4,6 +4,7 @@
   padding: 2rem;
   text-align: center;
   width: 100%;
+  color: black;
 }
 
 body {
@@ -13,10 +14,10 @@ body {
 #waveform {
   width: 100%;
   height: 10rem;
-  background-color: white;
+  background-color: transparent;
   color: black;
   max-width: 90%;
-  border: 5px solid red;
+  border: 1px solid red;
 }
 
 .controls {
