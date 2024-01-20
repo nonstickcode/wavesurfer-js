@@ -3,40 +3,40 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  background-color: #b2afaf;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#waveform {
+  width: 100%;
+  height: 10rem;
+  background-color: white;
+  color: black;
+  max-width: 90%;
+  border: 5px solid red;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.controls {
+  margin-top: 10px;
 }
 
-.card {
-  padding: 2em;
+.controls button {
+  margin: 1px;
+  border: 1px solid #ccc !important;
 }
 
-.read-the-docs {
-  color: #888;
+.controls button:hover {
+  background-color: #ececec;
+}
+
+.audio-info {
+  margin-top: 15px;
+  color: #fff;
+  border-radius: 4px;
+  padding: 8px 15px;
+  display: inline-block;
+  font-size: 12px;
 }
