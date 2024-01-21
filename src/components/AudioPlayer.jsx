@@ -8,6 +8,7 @@ import {
   faVolumeDown,
   faVolumeMute,
   faVolumeOff,
+  faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 
 const formWaveSurferOptions = (ref) => ({
@@ -17,7 +18,7 @@ const formWaveSurferOptions = (ref) => ({
   cursorColor: '#39ff14',
   responsive: true,
   height: 50,
-  normalize: false, // height to height of container
+  normalize: false,
   backend: 'WebAudio',
   barWidth: 2,
   barGroup: 3,
@@ -33,6 +34,7 @@ function formatTime(seconds) {
 export default function AudioPlayer({ audioFile }) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
+  const fileInputRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [muted, setMuted] = useState(false);
@@ -42,48 +44,34 @@ export default function AudioPlayer({ audioFile }) {
 
   // Initialize Wavesurfer and set up event listeners
   useEffect(() => {
-    // Check if the ref is null
     if (!waveformRef.current) {
       console.error('Waveform ref is null');
       return;
     }
-  
-    // Initialize Wavesurfer only if it hasn't been initialized yet
+
     if (!wavesurfer.current) {
-      console.log('Creating new Wavesurfer instance');
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
-  
-      // Load the audio file
-      console.log(`Loading audio file: ${audioFile}`);
       wavesurfer.current.load(audioFile);
   
-      // Event listener for when Wavesurfer is ready
       wavesurfer.current.on('ready', () => {
-        console.log('Wavesurfer ready');
         setVolume(wavesurfer.current.getVolume());
         setDuration(wavesurfer.current.getDuration());
         setAudioFileName(audioFile.split('/').pop());
       });
-  
-      // Event listener for audio process
+
       wavesurfer.current.on('audioprocess', () => {
         setCurrentTime(wavesurfer.current.getCurrentTime());
       });
-  
-      // Event listener for errors
+
       wavesurfer.current.on('error', (error) => {
         console.error('Wavesurfer error:', error);
       });
     } else {
-      // If the Wavesurfer instance already exists, just load the new audio file
-      console.log('Wavesurfer instance already exists, loading new audio file');
       wavesurfer.current.load(audioFile);
     }
-  
-    // Cleanup function
+
     return () => {
-      console.log('Cleaning up Wavesurfer');
       if (wavesurfer.current) {
         wavesurfer.current.un('audioprocess');
         wavesurfer.current.un('ready');
@@ -92,17 +80,13 @@ export default function AudioPlayer({ audioFile }) {
         wavesurfer.current = null;
       }
     };
-  }, [audioFile]); // Dependency array includes only audioFile
-  
+  }, [audioFile]);
 
-  // Toggle playback of audio
   const handlePlayPause = () => {
     setPlaying(!playing);
     wavesurfer.current.playPause();
   };
 
-  // Adjust audio volume
-  // Adjust audio volume
   const handleVolumeChange = (newVolume) => {
     if (muted && newVolume > 0) {
       setMuted(false);
@@ -112,37 +96,62 @@ export default function AudioPlayer({ audioFile }) {
     setMuted(newVolume === 0);
   };
 
-  // Toggle mute/unmute audio
   const handleMute = () => {
     setMuted(!muted);
     wavesurfer.current.setVolume(muted ? volume : 0);
   };
 
-  // Increase volume by 10%
   const handleVolumeUp = () => {
     handleVolumeChange(Math.min(volume + 0.1, 1));
   };
 
-  // Decrease volume by 10%
   const handleVolumeDown = () => {
     handleVolumeChange(Math.max(volume - 0.1, 0));
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      processFile(files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      processFile(files[0]);
+    }
+  };
+
+  const processFile = (file) => {
+    const url = URL.createObjectURL(file);
+    loadAudioFile(url);
+    setAudioFileName(file.name);
+  };
+
+  const loadAudioFile = (fileUrl) => {
+    if (wavesurfer.current) {
+      wavesurfer.current.load(fileUrl);
+    }
+  };
+
   return (
-    <div className='waveform-container' >
+    <div className='waveform-container'>
       <div id="waveform" ref={waveformRef} style={{ width: '100%' }}></div>
       <div className="controls">
-        {/* Play/Pause Button */}
         <button onClick={handlePlayPause}>
           <FontAwesomeIcon icon={playing ? faPause : faPlay} />
         </button>
 
-        {/* Mute/Unmute Button */}
         <button onClick={handleMute}>
           <FontAwesomeIcon icon={muted ? faVolumeOff : faVolumeMute} />
         </button>
 
-        {/* Volume Slider */}
         <input
           type="range"
           id="volume"
@@ -154,27 +163,25 @@ export default function AudioPlayer({ audioFile }) {
           onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
         />
 
-        {/* Volume Down Button */}
         <button onClick={handleVolumeDown}>
           <FontAwesomeIcon icon={faVolumeDown} />
         </button>
 
-        {/* Volume Up Button */}
         <button onClick={handleVolumeUp}>
           <FontAwesomeIcon icon={faVolumeUp} />
         </button>
       </div>
 
-      {/* Audio file name and current play time */}
       <div className="audio-info">
-        <span>
-          Playing: {audioFileName} <br />
-        </span>
-        <span>
-          Duration: {formatTime(duration)} | Current Time:{' '}
-          {formatTime(currentTime)} <br />
-        </span>
+        <span>Playing: {audioFileName} <br /></span>
+        <span>Duration: {formatTime(duration)} | Current Time: {formatTime(currentTime)} <br /></span>
         <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span>
+      </div>
+
+      <div className="drop-zone" onDrop={handleDrop} onDragOver={handleDragOver} onClick={() => fileInputRef.current.click()}>
+        Drag and drop your MP3 file here or click to upload
+        <FontAwesomeIcon className='upload-icon' icon={faUpload} />
+        <input type="file" onChange={handleFileChange} accept=".mp3" style={{ display: 'none' }} ref={fileInputRef} />
       </div>
     </div>
   );

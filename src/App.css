@@ -15,11 +15,14 @@ body {
 .waveform-container {
 
   width: 50%;
+  max-width: 20rem;
   height: 100%;
   margin: 10rem auto;
   display: block;
   background-color: black;
-  /* border: 1px solid red; */
+  padding: 3rem;
+  border-radius: 2rem;
+  border: 2px solid lightgreen;
 }
 
 #waveform {
@@ -57,4 +60,19 @@ body {
   display: inline-block;
   font-size: 16px;
   cursor: default;
+}
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  aspect-ratio: 1.1;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-size: large;
+  color: lightblue;
+  border: 1px dashed lightblue;
+}
+.upload-icon  {
+font-size: 5rem;
+margin: auto auto;
 }
