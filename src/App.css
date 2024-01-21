@@ -15,7 +15,7 @@ body {
 .waveform-container {
 
   width: 50%;
-  max-width: 20rem;
+  max-width: 25rem;
   height: 100%;
   margin: 10rem auto;
   display: block;
@@ -26,11 +26,9 @@ body {
 }
 
 #waveform {
-  
   display: block;
   background-color: transparent;
   color: black;
-  /* border: 1px solid blue; */
   cursor: pointer;
 }
 
@@ -39,14 +37,22 @@ body {
 }
 
 .controls button {
+  width: 2.5rem;
+  height: 2.5rem;
   margin: 1px;
+  font-size: large;
+  padding: auto;
+  margin: 0.25rem;
   border: 1px solid #ccc !important;
-  border-radius: 25%;
+  border-radius: 50%;
+  transition: transform 0.1s ease;
 }
-
 .controls button:hover {
-  background-color: #ececec;
   cursor: pointer;
+  color: blue;
+}
+.controls button:active {
+  transform: scale(0.8);
 }
 .controls input {
   cursor: pointer;
@@ -58,17 +64,18 @@ body {
   border-radius: 4px;
   padding: 8px 15px;
   display: inline-block;
-  font-size: 16px;
+  font-size: large;
   cursor: default;
 }
 .drop-zone {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   width: 70%;
   aspect-ratio: 1.1;
   margin: 2rem auto;
   padding: 1rem;
-  font-size: large;
+  font-size: x-large;
   color: lightblue;
   border: 1px dashed lightblue;
 }
