@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
 import {
   faPlay,
   faPause,
@@ -53,7 +54,7 @@ export default function AudioPlayer({ audioFile }) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       wavesurfer.current.load(audioFile);
-  
+
       wavesurfer.current.on('ready', () => {
         setVolume(wavesurfer.current.getVolume());
         setDuration(wavesurfer.current.getDuration());
@@ -141,7 +142,7 @@ export default function AudioPlayer({ audioFile }) {
   };
 
   return (
-    <div className='waveform-container'>
+    <div className="waveform-container">
       <div id="waveform" ref={waveformRef} style={{ width: '100%' }}></div>
       <div className="controls">
         <button onClick={handlePlayPause}>
@@ -173,16 +174,37 @@ export default function AudioPlayer({ audioFile }) {
       </div>
 
       <div className="audio-info">
-        <span>Playing: {audioFileName} <br /></span>
-        <span>Duration: {formatTime(duration)} | Current Time: {formatTime(currentTime)} <br /></span>
+        <span>
+          Playing: {audioFileName} <br />
+        </span>
+        <span>
+          Duration: {formatTime(duration)} | Current Time:{' '}
+          {formatTime(currentTime)} <br />
+        </span>
         <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span>
       </div>
 
-      <div className="drop-zone" onDrop={handleDrop} onDragOver={handleDragOver} onClick={() => fileInputRef.current.click()}>
+      <div
+        className="drop-zone"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={() => fileInputRef.current.click()}
+      >
         Drag and drop your MP3 file here or click to upload
-        <FontAwesomeIcon className='upload-icon' icon={faUpload} />
-        <input type="file" onChange={handleFileChange} accept=".mp3" style={{ display: 'none' }} ref={fileInputRef} />
+        <FontAwesomeIcon className="upload-icon" icon={faUpload} />
+        <input
+          type="file"
+          onChange={handleFileChange}
+          accept=".mp3"
+          style={{ display: 'none' }}
+          ref={fileInputRef}
+        />
       </div>
     </div>
   );
 }
+
+// Prop validation
+AudioPlayer.propTypes = {
+  audioFile: PropTypes.string.isRequired,
+};
