@@ -8,22 +8,27 @@
 }
 
 body {
+  background-color: black;
   
 }
 
 .waveform-container {
-  width: 100%;
+
+  width: 50%;
   height: 100%;
+  margin: 10rem auto;
   display: block;
   background-color: black;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 #waveform {
+  
   display: block;
   background-color: transparent;
   color: black;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
+  cursor: pointer;
 }
 
 .controls {
@@ -33,10 +38,15 @@ body {
 .controls button {
   margin: 1px;
   border: 1px solid #ccc !important;
+  border-radius: 25%;
 }
 
 .controls button:hover {
   background-color: #ececec;
+  cursor: pointer;
+}
+.controls input {
+  cursor: pointer;
 }
 
 .audio-info {
@@ -45,5 +55,6 @@ body {
   border-radius: 4px;
   padding: 8px 15px;
   display: inline-block;
-  font-size: 12px;
+  font-size: 16px;
+  cursor: default;
 }

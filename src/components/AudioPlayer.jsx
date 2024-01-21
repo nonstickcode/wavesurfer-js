@@ -12,11 +12,11 @@ import {
 
 const formWaveSurferOptions = (ref) => ({
   container: ref,
-  waveColor: '#39ff14',
-  progressColor: '#0178ff',
-  cursorColor: '#efefef',
+  waveColor: 'white',
+  progressColor: '#39ff14',
+  cursorColor: '#39ff14',
   responsive: true,
-  height: 200,
+  height: 50,
   normalize: false, // height to height of container
   backend: 'WebAudio',
   barWidth: 2,
