@@ -23,9 +23,9 @@ body {
   border-radius: 2rem;
   border: 2px solid white;
   box-shadow: 
-  10px 10px 0 0 rgba(255, 0, 0, 0.7), /* Red shadow */
-  20px 20px 0 0 rgba(0, 255, 0, 0.7), /* Green shadow */
-  30px 30px 0 0 rgba(0, 0, 255, 0.7); /* Blue shadow */
+  12px 12px 0 0 rgba(255, 0, 0, 0.7), /* Red shadow */
+  22px 22px 0 0 rgba(0, 255, 0, 0.7), /* Green shadow */
+  32px 32px 0 0 rgba(0, 0, 255, 0.7); /* Blue shadow */
 }
 
 #waveform {
