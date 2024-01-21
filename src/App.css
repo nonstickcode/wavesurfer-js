@@ -1,23 +1,29 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   width: 100%;
   color: black;
 }
 
 body {
-  background-color: #b2afaf;
+  
+}
+
+.waveform-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: black;
+  border: 1px solid red;
 }
 
 #waveform {
-  width: 100%;
-  height: 10rem;
+  display: block;
   background-color: transparent;
   color: black;
-  max-width: 90%;
-  border: 1px solid red;
+  border: 1px solid blue;
 }
 
 .controls {

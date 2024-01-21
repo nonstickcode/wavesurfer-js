@@ -12,12 +12,12 @@ import {
 
 const formWaveSurferOptions = (ref) => ({
   container: ref,
-  waveColor: '#fff',
+  waveColor: '#39ff14',
   progressColor: '#0178ff',
-  cursorColor: 'transparent',
+  cursorColor: '#efefef',
   responsive: true,
   height: 200,
-  normalize: true, // height to height of container
+  normalize: false, // height to height of container
   backend: 'WebAudio',
   barWidth: 2,
   barGroup: 3,
@@ -42,39 +42,58 @@ export default function AudioPlayer({ audioFile }) {
 
   // Initialize Wavesurfer and set up event listeners
   useEffect(() => {
-    console.log('Initializing Wavesurfer');
-
+    // Check if the ref is null
+    if (!waveformRef.current) {
+      console.error('Waveform ref is null');
+      return;
+    }
+  
+    // Initialize Wavesurfer only if it hasn't been initialized yet
     if (!wavesurfer.current) {
       console.log('Creating new Wavesurfer instance');
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
+  
+      // Load the audio file
+      console.log(`Loading audio file: ${audioFile}`);
+      wavesurfer.current.load(audioFile);
+  
+      // Event listener for when Wavesurfer is ready
+      wavesurfer.current.on('ready', () => {
+        console.log('Wavesurfer ready');
+        setVolume(wavesurfer.current.getVolume());
+        setDuration(wavesurfer.current.getDuration());
+        setAudioFileName(audioFile.split('/').pop());
+      });
+  
+      // Event listener for audio process
+      wavesurfer.current.on('audioprocess', () => {
+        setCurrentTime(wavesurfer.current.getCurrentTime());
+      });
+  
+      // Event listener for errors
+      wavesurfer.current.on('error', (error) => {
+        console.error('Wavesurfer error:', error);
+      });
     } else {
-      console.log('Wavesurfer instance already exists');
+      // If the Wavesurfer instance already exists, just load the new audio file
+      console.log('Wavesurfer instance already exists, loading new audio file');
+      wavesurfer.current.load(audioFile);
     }
-
-    // Load the audio file
-    wavesurfer.current.load(audioFile);
-
-    // When Wavesurfer is ready
-    wavesurfer.current.on('ready', () => {
-      setVolume(wavesurfer.current.getVolume());
-      setDuration(wavesurfer.current.getDuration());
-      setAudioFileName(audioFile.split('/').pop());
-    });
-
-    // Update current time in state as audio plays
-    wavesurfer.current.on('audioprocess', () => {
-      setCurrentTime(wavesurfer.current.getCurrentTime());
-    });
-
-    // Clean up event listeners and destroy instance on unmount
+  
+    // Cleanup function
     return () => {
-      wavesurfer.current.un('audioprocess');
-      wavesurfer.current.un('ready');
-      // Unsubscribe from any other events you have subscribed to
-      wavesurfer.current.destroy();
+      console.log('Cleaning up Wavesurfer');
+      if (wavesurfer.current) {
+        wavesurfer.current.un('audioprocess');
+        wavesurfer.current.un('ready');
+        wavesurfer.current.un('error');
+        wavesurfer.current.destroy();
+        wavesurfer.current = null;
+      }
     };
-  }, [audioFile]);
+  }, [audioFile]); // Dependency array includes only audioFile
+  
 
   // Toggle playback of audio
   const handlePlayPause = () => {
@@ -110,7 +129,7 @@ export default function AudioPlayer({ audioFile }) {
   };
 
   return (
-    <div>
+    <div className='waveform-container' >
       <div id="waveform" ref={waveformRef} style={{ width: '100%' }}></div>
       <div className="controls">
         {/* Play/Pause Button */}
