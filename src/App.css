@@ -32,7 +32,7 @@ body {
 .title {
   color: black;
   font-size: xxx-large;
-
+cursor: default;
   font-weight: bold;
   text-shadow:
     -1px -1px 0 gray,
@@ -48,7 +48,7 @@ body {
   width: 60%;
   margin: 1rem auto 1.3rem;
   font-size: large;
-  
+  cursor: pointer;
 }
 
 #waveform {
