@@ -1,6 +1,6 @@
 {
   "name": "wavesurfer-js-react",
-  "private": true,
+  "private": false,
   "version": "0.9.9",
   "homepage": "https://nonstickcode.github.io/wavesurfer-js/",
   "type": "module",
