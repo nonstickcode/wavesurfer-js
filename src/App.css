@@ -162,6 +162,9 @@ body {
 
 /* Responsive styles */
 @media only screen and (max-width: 768px) {
+  .title {
+    font-size: xx-large;
+  }
   .waveform-container {
     margin: 0;
     padding: 1rem 1rem;
@@ -176,9 +179,7 @@ body {
 }
 
 @media only screen and (max-width: 480px) {
-  .title {
-    font-size: xx-large;
-  }
+  
   .dropdown-selector select {
     font-size: medium;
   }
