@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -14,13 +14,11 @@ body {
 }
 
 .waveform-container {
-  width: 50%;
-  max-width: 25rem;
-  height: 100%;
+  width: 90%;
   margin: 1rem auto;
   display: block;
   background-color: black;
-  padding: 2rem 3rem;
+  padding: 2rem 4rem;
   border-radius: 2rem;
   border: 2px solid gray;
   box-shadow:
@@ -28,6 +26,7 @@ body {
     10px 10px 0 0 rgba(0, 255, 0, 0.7),
     15px 15px 0 0 rgba(255, 0, 0, 0.7);
 }
+/* #39ff14 */
 
 .title {
   color: black;
@@ -45,7 +44,8 @@ body {
 }
 
 .dropdown-selector select {
-  width: 60%;
+  width: fit-content;
+  max-width: 20rem;
   margin: 1rem auto 1.3rem;
   font-size: large;
   cursor: pointer;
@@ -69,7 +69,6 @@ body {
 .controls button {
   width: 2.5rem;
   height: 2.5rem;
-  margin: 1px;
   font-size: large;
   padding: auto;
   margin: 0.25rem;
@@ -89,7 +88,8 @@ body {
 }
 .slider-container {
   position: relative;
-  width: 40%; /* Adjust based on your design preference */
+
+  max-width: 30%; /* Adjust based on your design preference */
   margin: 0 1rem; /* Optional: adds space around the slider */
   color: white;
   padding-bottom: 1.6rem;
@@ -118,7 +118,7 @@ body {
   appearance: none;
   width: 1rem;
   height: 1rem;
-  background: white;
+  background: #39ff14;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -126,7 +126,7 @@ body {
 .slider::-moz-range-thumb {
   width: 15px;
   height: 15px;
-  background: blue;
+  background: #39ff14;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -144,7 +144,7 @@ body {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 18rem;
   aspect-ratio: 1.1;
   margin: 2rem auto 1rem;
   padding: 1rem;
@@ -158,4 +158,25 @@ body {
 .upload-icon {
   font-size: 5rem;
   margin: auto auto;
+}
+
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  .waveform-container {
+    margin: 0;
+    padding: 1rem 1rem;
+  }
+  .drop-zone {
+    width: 50%;
+    font-size: small;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .title {
+    font-size: xx-large;
+  }
+  .dropdown-selector select {
+    font-size: small;
+  }
 }
