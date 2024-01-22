@@ -1,6 +1,6 @@
 # WaveSurfer.js Demo Project
 
-![Project Image](./public/readme-image.jpeg)
+![Project Image](./readme-image.jpeg)
 
 ## Overview
 
