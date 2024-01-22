@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import CustomSlider from './CustomSlider';
 import defaultAudio1 from '../assets/defaultAudio1.mp3';
 import defaultAudio2 from '../assets/defaultAudio2.mp3';
+import defaultAudio3 from '../assets/defaultAudio3.mp3';
+import defaultAudio4 from '../assets/defaultAudio4.mp3';
+import defaultAudio5 from '../assets/defaultAudio5.mp3';
 
 import {
   faPlay,
@@ -48,20 +51,22 @@ export default function AudioPlayer() {
   const defaultAudioFiles = [
     { name: 'Default Audio 1', url: defaultAudio1 },
     { name: 'Default Audio 2', url: defaultAudio2 },
+    { name: 'Default Audio 3', url: defaultAudio3 },
+    { name: 'Default Audio 4', url: defaultAudio4 },
+    { name: 'Default Audio 5', url: defaultAudio5 },
   ];
 
   const [audioFiles, setAudioFiles] = useState(defaultAudioFiles);
   const [selectedFile, setSelectedFile] = useState(defaultAudioFiles[0]);
-  
-  
-
 
   useEffect(() => {
     if (!waveformRef.current || !selectedFile) {
       return;
     }
 
-    wavesurfer.current = WaveSurfer.create(formWaveSurferOptions(waveformRef.current));
+    wavesurfer.current = WaveSurfer.create(
+      formWaveSurferOptions(waveformRef.current)
+    );
 
     wavesurfer.current.load(selectedFile.url);
 
@@ -142,12 +147,27 @@ export default function AudioPlayer() {
   const addFile = (file) => {
     const url = URL.createObjectURL(file);
     const newFile = { name: file.name, url };
-    setAudioFiles(prevFiles => [...prevFiles, newFile]);
+    setAudioFiles((prevFiles) => [...prevFiles, newFile]);
     setSelectedFile(newFile);
   };
 
   return (
     <div className="waveform-container">
+      <div className="title">Waveform.js</div>
+
+      <div className="dropdown-selector">
+        <select
+          onChange={(e) => setSelectedFile(audioFiles[e.target.value])}
+          value={audioFiles.findIndex((file) => file === selectedFile)}
+        >
+          {audioFiles.map((file, index) => (
+            <option key={index} value={index}>
+              {file.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div id="waveform" ref={waveformRef} style={{ width: '100%' }}></div>
 
       <div className="controls">
@@ -160,12 +180,13 @@ export default function AudioPlayer() {
         </button>
 
         <CustomSlider
-          value={muted ? 0 : volume}
-          min="0"
-          max="1"
-          step="0.05"
-          onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-        />
+        value={muted ? 0 : volume}
+        min="0"
+        max="1"
+        step="0.05"
+        onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+        label={muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}
+      />
 
         <button onClick={handleVolumeDown}>
           <FontAwesomeIcon icon={faVolumeDown} />
@@ -177,16 +198,19 @@ export default function AudioPlayer() {
       </div>
 
       <div className="audio-info">
-        <span>Playing: {selectedFile ? selectedFile.name : 'No file selected'} <br /></span>
-        <span>Duration: {formatTime(duration)} | Current Time: {formatTime(currentTime)} <br /></span>
-        <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span>
+      {/* <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span> */}
+      <br />
+        <span>
+          Playing: {selectedFile ? selectedFile.name : 'No file selected'}{' '}
+          <br />
+        </span>
+        <span>
+          Current Time:{' '} {formatTime(currentTime)} 
+          <br />
+          Duration: {formatTime(duration)}
+        </span>
+        
       </div>
-
-      <select onChange={(e) => setSelectedFile(audioFiles[e.target.value])} value={audioFiles.findIndex(file => file === selectedFile)}>
-        {audioFiles.map((file, index) => (
-          <option key={index} value={index}>{file.name}</option>
-        ))}
-      </select>
 
       <div
         className="drop-zone"
