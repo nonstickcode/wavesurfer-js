@@ -1,5 +1,7 @@
 #root {
-  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  max-width: 400px;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -7,6 +9,7 @@
   color: black;
   line-height: 1.7;
   font-family: monospace, 'Courier New', Courier;
+  
 }
 
 body {
@@ -63,14 +66,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid white; */
 }
 
 .controls button {
   width: 2.5rem;
   height: 2.5rem;
   font-size: large;
-  padding: auto;
+  padding: 0;
   margin: 0.25rem;
   border: 1px solid #ccc !important;
   border-radius: 50%;
@@ -88,13 +90,11 @@ body {
 }
 .slider-container {
   position: relative;
-
-  max-width: 30%; /* Adjust based on your design preference */
-  margin: 0 1rem; /* Optional: adds space around the slider */
+  max-width: 30%;
+  margin: 0 1rem;
   color: white;
   padding-bottom: 1.6rem;
   font-size: small;
-  /* border: 1px solid white; */
 }
 
 .slider-track {
@@ -170,6 +170,9 @@ body {
     width: 50%;
     font-size: small;
   }
+  .controls button {
+    font-size: medium;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -177,6 +180,6 @@ body {
     font-size: xx-large;
   }
   .dropdown-selector select {
-    font-size: small;
+    font-size: medium;
   }
 }
