@@ -153,7 +153,7 @@ export default function AudioPlayer() {
 
   return (
     <div className="waveform-container">
-      <div className="title">Waveform.js</div>
+      <div className="title">wavesurfer.js</div>
 
       <div className="dropdown-selector">
         <select
