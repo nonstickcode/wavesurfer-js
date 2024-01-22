@@ -2,6 +2,10 @@ import { useRef, useEffect, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import CustomSlider from './CustomSlider';
+import defaultAudio1 from '../assets/defaultAudio1.mp3';
+import defaultAudio2 from '../assets/defaultAudio2.mp3';
+
 import {
   faPlay,
   faPause,
@@ -25,14 +29,13 @@ const formWaveSurferOptions = (ref) => ({
   barGroup: 3,
 });
 
-// Helper function to format time
 function formatTime(seconds) {
   let date = new Date(0);
   date.setSeconds(seconds);
   return date.toISOString().substr(11, 8);
 }
 
-export default function AudioPlayer({ audioFile }) {
+export default function AudioPlayer() {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const fileInputRef = useRef(null);
@@ -41,51 +44,54 @@ export default function AudioPlayer({ audioFile }) {
   const [muted, setMuted] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [audioFileName, setAudioFileName] = useState('');
 
-  // Initialize Wavesurfer and set up event listeners
+  const defaultAudioFiles = [
+    { name: 'Default Audio 1', url: defaultAudio1 },
+    { name: 'Default Audio 2', url: defaultAudio2 },
+  ];
+
+  const [audioFiles, setAudioFiles] = useState(defaultAudioFiles);
+  const [selectedFile, setSelectedFile] = useState(defaultAudioFiles[0]);
+  
+  
+
+
   useEffect(() => {
-    if (!waveformRef.current) {
-      console.error('Waveform ref is null');
+    if (!waveformRef.current || !selectedFile) {
       return;
     }
 
-    if (!wavesurfer.current) {
-      const options = formWaveSurferOptions(waveformRef.current);
-      wavesurfer.current = WaveSurfer.create(options);
-      wavesurfer.current.load(audioFile);
+    wavesurfer.current = WaveSurfer.create(formWaveSurferOptions(waveformRef.current));
 
-      wavesurfer.current.on('ready', () => {
-        setVolume(wavesurfer.current.getVolume());
-        setDuration(wavesurfer.current.getDuration());
-        setAudioFileName(audioFile.split('/').pop());
-      });
+    wavesurfer.current.load(selectedFile.url);
 
-      wavesurfer.current.on('audioprocess', () => {
-        setCurrentTime(wavesurfer.current.getCurrentTime());
-      });
+    wavesurfer.current.on('ready', () => {
+      setVolume(wavesurfer.current.getVolume());
+      setDuration(wavesurfer.current.getDuration());
+      setCurrentTime(0);
+      if (playing) {
+        wavesurfer.current.play();
+      }
+    });
 
-      wavesurfer.current.on('error', (error) => {
-        console.error('Wavesurfer error:', error);
-      });
-    } else {
-      wavesurfer.current.load(audioFile);
-    }
+    wavesurfer.current.on('audioprocess', () => {
+      setCurrentTime(wavesurfer.current.getCurrentTime());
+    });
+
+    wavesurfer.current.on('error', (error) => {
+      console.error('Wavesurfer error:', error);
+    });
 
     return () => {
-      if (wavesurfer.current) {
-        wavesurfer.current.un('audioprocess');
-        wavesurfer.current.un('ready');
-        wavesurfer.current.un('error');
-        wavesurfer.current.destroy();
-        wavesurfer.current = null;
-      }
+      wavesurfer.current.destroy();
     };
-  }, [audioFile]);
+  }, [selectedFile]);
 
   const handlePlayPause = () => {
     setPlaying(!playing);
-    wavesurfer.current.playPause();
+    if (wavesurfer.current) {
+      wavesurfer.current.playPause();
+    }
   };
 
   const handleVolumeChange = (newVolume) => {
@@ -93,13 +99,17 @@ export default function AudioPlayer({ audioFile }) {
       setMuted(false);
     }
     setVolume(newVolume);
-    wavesurfer.current.setVolume(newVolume);
+    if (wavesurfer.current) {
+      wavesurfer.current.setVolume(newVolume);
+    }
     setMuted(newVolume === 0);
   };
 
   const handleMute = () => {
     setMuted(!muted);
-    wavesurfer.current.setVolume(muted ? volume : 0);
+    if (wavesurfer.current) {
+      wavesurfer.current.setVolume(muted ? volume : 0);
+    }
   };
 
   const handleVolumeUp = () => {
@@ -118,32 +128,28 @@ export default function AudioPlayer({ audioFile }) {
     e.preventDefault();
     const files = e.dataTransfer.files;
     if (files && files[0]) {
-      processFile(files[0]);
+      addFile(files[0]);
     }
   };
 
   const handleFileChange = (e) => {
     const files = e.target.files;
     if (files && files[0]) {
-      processFile(files[0]);
+      addFile(files[0]);
     }
   };
 
-  const processFile = (file) => {
+  const addFile = (file) => {
     const url = URL.createObjectURL(file);
-    loadAudioFile(url);
-    setAudioFileName(file.name);
-  };
-
-  const loadAudioFile = (fileUrl) => {
-    if (wavesurfer.current) {
-      wavesurfer.current.load(fileUrl);
-    }
+    const newFile = { name: file.name, url };
+    setAudioFiles(prevFiles => [...prevFiles, newFile]);
+    setSelectedFile(newFile);
   };
 
   return (
     <div className="waveform-container">
       <div id="waveform" ref={waveformRef} style={{ width: '100%' }}></div>
+
       <div className="controls">
         <button onClick={handlePlayPause}>
           <FontAwesomeIcon icon={playing ? faPause : faPlay} />
@@ -153,14 +159,11 @@ export default function AudioPlayer({ audioFile }) {
           <FontAwesomeIcon icon={muted ? faVolumeOff : faVolumeMute} />
         </button>
 
-        <input
-          type="range"
-          id="volume"
-          name="volume"
+        <CustomSlider
+          value={muted ? 0 : volume}
           min="0"
           max="1"
           step="0.05"
-          value={muted ? 0 : volume}
           onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
         />
 
@@ -174,15 +177,16 @@ export default function AudioPlayer({ audioFile }) {
       </div>
 
       <div className="audio-info">
-        <span>
-          Playing: {audioFileName} <br />
-        </span>
-        <span>
-          Duration: {formatTime(duration)} | Current Time:{' '}
-          {formatTime(currentTime)} <br />
-        </span>
+        <span>Playing: {selectedFile ? selectedFile.name : 'No file selected'} <br /></span>
+        <span>Duration: {formatTime(duration)} | Current Time: {formatTime(currentTime)} <br /></span>
         <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span>
       </div>
+
+      <select onChange={(e) => setSelectedFile(audioFiles[e.target.value])} value={audioFiles.findIndex(file => file === selectedFile)}>
+        {audioFiles.map((file, index) => (
+          <option key={index} value={index}>{file.name}</option>
+        ))}
+      </select>
 
       <div
         className="drop-zone"
@@ -204,7 +208,6 @@ export default function AudioPlayer({ audioFile }) {
   );
 }
 
-// Prop validation
 AudioPlayer.propTypes = {
-  audioFile: PropTypes.string.isRequired,
+  audioFile: PropTypes.string,
 };
