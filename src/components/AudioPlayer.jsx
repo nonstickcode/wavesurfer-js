@@ -186,6 +186,7 @@ export default function AudioPlayer() {
         step="0.05"
         onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
         label={muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}
+        labelStyle={{ color: muted ? 'red' : 'inherit' }} // Conditional label style
       />
 
         <button onClick={handleVolumeDown}>
@@ -198,18 +199,15 @@ export default function AudioPlayer() {
       </div>
 
       <div className="audio-info">
-      {/* <span>{muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}</span> */}
-      <br />
         <span>
           Playing: {selectedFile ? selectedFile.name : 'No file selected'}{' '}
           <br />
         </span>
         <span>
-          Current Time:{' '} {formatTime(currentTime)} 
+          Current Time: {formatTime(currentTime)}
           <br />
           Duration: {formatTime(duration)}
         </span>
-        
       </div>
 
       <div

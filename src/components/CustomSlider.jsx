@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-const CustomSlider = ({ value, onChange, min, max, step, label }) => (
+const CustomSlider = ({ value, onChange, min, max, step, label, labelStyle }) => (
   <div className="slider-container">
-    <label className="slider-label">{label}</label>
+     <label className="slider-label" style={labelStyle}>{label}</label>
     <div
       className="slider-track"
       style={{ width: `${((value - min) / (max - min)) * 100}%` }}
@@ -26,6 +26,7 @@ CustomSlider.propTypes = {
   max: PropTypes.number,
   step: PropTypes.number,
   label: PropTypes.string,
+  labelStyle: PropTypes.object
 };
 
 export default CustomSlider;

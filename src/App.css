@@ -32,7 +32,7 @@ body {
 .title {
   color: black;
   font-size: xxx-large;
-cursor: default;
+  cursor: default;
   font-weight: bold;
   text-shadow:
     -1px -1px 0 gray,
@@ -103,7 +103,6 @@ cursor: default;
   background-color: none;
   top: 50%;
   transform: translateY(-50%);
-  
 }
 
 .slider {
@@ -112,7 +111,6 @@ cursor: default;
   height: 4px;
   background: gray;
   outline: none;
-
 }
 
 .slider::-webkit-slider-thumb {
@@ -133,7 +131,6 @@ cursor: default;
   border-radius: 50%;
 }
 
-
 .audio-info {
   color: #fff;
   border-radius: 4px;
@@ -142,7 +139,6 @@ cursor: default;
   font-size: small;
   cursor: default;
 }
-
 
 .drop-zone {
   cursor: pointer;
@@ -163,4 +159,3 @@ cursor: default;
   font-size: 5rem;
   margin: auto auto;
 }
-
