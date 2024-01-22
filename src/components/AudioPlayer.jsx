@@ -180,14 +180,14 @@ export default function AudioPlayer() {
         </button>
 
         <CustomSlider
-        value={muted ? 0 : volume}
-        min="0"
-        max="1"
-        step="0.05"
-        onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-        label={muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}
-        labelStyle={{ color: muted ? 'red' : 'inherit' }} // Conditional label style
-      />
+          value={muted ? 0 : volume}
+          min="0"
+          max="1"
+          step="0.05"
+          onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+          label={muted ? 'Muted' : `Volume: ${Math.round(volume * 100)}%`}
+          labelStyle={{ color: muted ? 'red' : 'inherit' }} // Conditional label style
+        />
 
         <button onClick={handleVolumeDown}>
           <FontAwesomeIcon icon={faVolumeDown} />
