@@ -1,5 +1,7 @@
 # WaveSurfer.js Demo Project
 
+![Project Image](./public/readme-image.jpeg)
+
 ## Overview
 
 This project is a demonstration of WaveSurfer.js, a customizable audio waveform visualization built on top of Web Audio API and HTML5 Canvas. It provides an interactive interface to visualize audio files with playback control, volume adjustment, and dynamic audio file loading.
@@ -27,10 +29,6 @@ This project is a demonstration of WaveSurfer.js, a customizable audio waveform 
 - Add more interactive features such as playback speed control.
 - Implement more complex waveform visualizations.
 - Enhance mobile responsiveness and touch controls.
-
-## Contributions
-
-Contributions to this project are welcome. Feel free to fork the repository, make changes, and submit a pull request.
 
 ## License
 
