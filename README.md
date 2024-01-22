@@ -4,7 +4,7 @@
 
 ## Overview
 
-This project is a demonstration of WaveSurfer.js, a customizable audio waveform visualization built on top of Web Audio API and HTML5 Canvas. It provides an interactive interface to visualize audio files with playback control, volume adjustment, and dynamic audio file loading. https://wavesurfer.xyz
+This project is a demonstration of WaveSurfer.js, a customizable audio waveform visualization built on top of Web Audio API and HTML5 Canvas. It provides an interactive interface to visualize audio files with playback control, volume adjustment, and dynamic audio file loading. See website for [WaveSurfer.js](https://wavesurfer.xyz)
 
 ## Features
 
